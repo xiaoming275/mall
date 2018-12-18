@@ -1,0 +1,4 @@
+driverClass=com.mysql.jdbc.Driver
+url=jdbc:mysql://localhost:4008/new
+username=root
+password=root

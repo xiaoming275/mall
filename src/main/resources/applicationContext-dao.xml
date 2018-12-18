@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx.xsd">
+	 
+	
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<!-- 将值赋值到属性 DI 注入 -->
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:4008/aa"></property>
+		<property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+		<property name="user" value="root"></property>
+		<property name="password" value="root"></property>
+	</bean>
+
+	<!-- 配置mybaits的属性以及核心 -->
+	<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+			<!-- 放入以前使用的mybdtis-config.xml地址名称 -->
+		<property name="configLocation" value="classpath:mybatis-config.xml"></property>
+		<!-- 配置文件 -->
+		<property name="mapperLocations" value="classpath:cn/goods/dao/*.xml"></property>
+		<!-- <property name="typeAliasesPackage" value="com.bdqn.ssm.pojo"></property> -->
+		<!-- 导入4大参数地址的类对象 -->
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<!-- 配置mapper接口转换 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="cn.goods.dao"></property>
+		<property name="beanName" value="sqlSessionFactoryBean"></property>
+	</bean>
+	<!-- 配置注解扫描包 -->
+	<context:component-scan base-package="cn.goods"></context:component-scan>
+	
+	
+</beans>
